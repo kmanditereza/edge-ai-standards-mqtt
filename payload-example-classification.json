@@ -2,7 +2,7 @@
     "timestamp": 1634534482000,
     "metrics": [
       {
-        "name": "cam 1/detect classification",
+        "name": "cam 1/defect classification",
         "timestamp": 1634534482000,
         "template_value": {
           "version": "1.0",
@@ -18,7 +18,7 @@
                 "double_value": 0.7
             }
         ],
-          "template_ref":"some kind of reference?",
+          "template_ref":"some kind of reference to the template?",
           "is_definition": false
         }
       }
