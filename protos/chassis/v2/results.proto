@@ -1,0 +1,62 @@
+syntax = "proto3";
+package chassis.v2;
+
+import "chassis/v2/types.proto";
+import "google/api/field_behavior.proto";
+
+message ClassificationResult {
+  message Prediction {
+    string class = 1 [(google.api.field_behavior) = REQUIRED];
+    double score = 2 [(google.api.field_behavior) = REQUIRED];
+  }
+  repeated Prediction class_predictions = 1;
+}
+message MultiClassificationResult {
+  repeated ClassificationResult classifications = 1;
+}
+
+message ObjectDetectionResult {
+  message Detection {
+    string class = 1 [(google.api.field_behavior) = REQUIRED];
+    double score = 2 [(google.api.field_behavior) = REQUIRED];
+    BoundingBox bounding_box = 3 [(google.api.field_behavior) = REQUIRED];
+  }
+  repeated Detection detections = 1;
+}
+
+// Segmentation
+message SegmentationResult {
+  message Segment {
+    string class = 1 [(google.api.field_behavior) = REQUIRED];
+    double score = 2 [(google.api.field_behavior) = REQUIRED];
+    ImageMask image_mask = 3;
+    BoundingBox bounding_box = 4;
+  }
+  repeated Segment segments = 1;
+}
+
+message NamedEntityResult {
+  message NamedEntity {
+    string entity_group = 1 [(google.api.field_behavior) = REQUIRED];
+    double score = 2 [(google.api.field_behavior) = REQUIRED];
+    TextSpan text_span = 3;
+  }
+  repeated NamedEntity entities = 1;
+}
+
+// Text summarization
+// Text generation
+// Translation
+message TextResult {
+  string text = 1;
+}
+
+// Image/video
+message ImageResult {
+  repeated bytes data = 1;
+}
+
+// Audio segmentation
+// Time-series classification
+// Regression
+// Ranking

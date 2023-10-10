@@ -1,0 +1,32 @@
+syntax = "proto3";
+package chassis.v2;
+
+import "google/api/field_behavior.proto";
+
+message Point {
+  int64 x = 1;
+  int64 y = 2;
+}
+
+message BoundingBox {
+  int64 x = 1 [(google.api.field_behavior) = REQUIRED];
+  int64 y = 2 [(google.api.field_behavior) = REQUIRED];
+  int64 width = 3 [(google.api.field_behavior) = REQUIRED];
+  int64 height = 4 [(google.api.field_behavior) = REQUIRED];
+  // rotation? degrees or radians?
+}
+
+message ImageMask {
+  int64 original_width = 1;
+  int64 original_height = 2;
+  // Pick one or the other below.
+  repeated int64 rle = 3;
+  repeated bytes image = 4;
+  repeated Point points = 5;
+}
+
+message TextSpan {
+  int64 start = 1;
+  int64 end = 2;
+  string text = 3;
+}

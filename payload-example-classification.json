@@ -1,0 +1,30 @@
+{
+    "timestamp": 1634534482000,
+    "metrics": [
+      {
+        "name": "cam 1/detect classification",
+        "timestamp": 1634534482000,
+        "template_value": {
+          "version": "1.0",
+          "metrics":[
+            {
+              "name": "class",
+              "string_value": "defect"
+            }
+        ],
+          "parameters":[
+            {
+                "name": "score",
+                "double_value": 0.7
+            }
+        ],
+          "template_ref":"some kind of reference?",
+          "is_definition": false
+        }
+      }
+    ],
+    "seq": 1,
+    "uuid": "7b26ead0-31ef-409a-a4bf-3c14f4bb2188",
+    "explanation":"asdf",
+    "drift":0.5
+  }

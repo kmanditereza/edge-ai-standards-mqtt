@@ -1,0 +1,26 @@
+syntax = "proto3";
+package chassis.v2;
+
+import "chassis/v2/types.proto";
+
+message ImageExplanation {
+  ImageMask mask = 1;
+}
+
+message TextExplanation {
+  message TextSpanScore {
+    TextSpan text_span = 1;
+    double score = 2;
+  }
+  message ClassResults {
+    string class = 1;
+    repeated TextSpanScore scores = 2;
+  }
+  repeated ClassResults class_results = 1;
+}
+
+// Saliency maps
+// SHAP
+// Lime's tabular
+// Lime text classification
+// Object detection
