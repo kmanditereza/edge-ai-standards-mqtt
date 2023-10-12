@@ -60,6 +60,8 @@ Joshua Coenen, Oshkosh
 
 ## Appendix A: ML Message Definitions
 ### Results
+
+```proto
 syntax = "proto3";
 package chassis.v2;
 
@@ -122,8 +124,11 @@ repeated bytes data = 1;
 // Time-series classification
 // Regression
 // Ranking
+```
 
 ## Explanations
+
+```proto
 syntax = "proto3";
 package chassis.v2;
 
@@ -150,5 +155,6 @@ repeated ClassResults class_results = 1;
 // Lime's tabular
 // Lime text classification
 // Object detection
+```
 
 ## Appendix B: Example Implementations
