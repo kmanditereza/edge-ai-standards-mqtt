@@ -31,7 +31,20 @@ One simple option for adding ML outputs to an Sparkplug payload would be to use 
 Note: Templates may be the right solution for custom ML result data types such as classifications, segmentations, etc.
 Explainability and drift (calculated locally by the model) could extend the top-level payload definitions?
 
+### Payload data format tradeoffs: XML vs. JSON vs. Protobuf
+When publishing data to an MQTT broker, there are a number of ways of encoding information. The three most commonn types include XML, JSON, and Protobuf.
+
+#### XML
+
+#### JSON
+
+#### Protobuf
+
+#### Recommendation
+
+
 ### Model format-specific payloads
+Maching learning applications at the edge are primarily focused on providing two types of outputs (1) predictions about things the _may_ happen in the future and (2) insights translated from unstructured sources (audio, video, etc.) into structured insights (classification or detection). Downstream systems require detailed information in order to make use of these outputs...
 #### Tensor
 For tensors, it might be best to use the Sparkplug dataset definition
 #### Classification
