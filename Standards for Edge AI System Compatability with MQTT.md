@@ -16,15 +16,47 @@ Edge environments are often exposed to significant amounts of unstructured data 
 ## Architectures for Edge AI
 
 ## Standards for Topic Definition
-### Subscribing Standards
-ML models developed by data scientists are often developed by separate data science teams not directly involved in the nuances of UNS systems developed for operational environments. As a result, the models they build are designed expected a strictly adopted data format for their models to generate meaningful results. As a result, it’s important that data science teams that develop AI models and operational teams responsible for implementing AI models into realtime MQTT systems understand how data needs to be structured for a model to operated correctly.
-Expectation: MQTT messages ingested by ML models ought to be formatted exactly in the way that a ML model expects inputs to be formatted. This makes it possible for models to be updated and improved overtime without pipelines breaking down as a result of these changes.
 
-### Publishing Standards
-Key pieces of information needed to data scientists for model evaluation and lifecycle management:
- * Model name
- * Unique model identifier
- * Model version (semver recommended)
+### Namespace  Definition
+A key step to topic namespace structuring would be the identification of Edge AI namespaces. Here, I propose two namespaces to begin with: Raw Data Namespace and Functional Namespace. The namespaces can be renamed according to AI nomenclature.
+
+#### Raw Data Namespace
+The primary objective of the Raw Data Namespace is to hold, in the Unified Namespace, raw data as it appears from cameras and other sensors.
+
+#### Functional Namespace
+The primary objectives of the Functional Namespace are:
+* Designing and structuring ML result data types.
+* Implementing consistent naming conventions.
+* Normalizing units of measurement.
+* Mapping data to appropriate user-defined types (UDTs).
+* Ensuring data compatibility and readiness for integration with other applications.
+* And so on
+
+### Flat MQTT Topic Namespace Structuring
+
+#### Raw Data Namespace in Flat MQTT
+How granular we want to go with the org hierarchy can be discussed.
+
+#### Function Namespace in Flat MQTT
+
+### MQTT Sparkplug  Topic Namespace Structuring
+The group_id  can be composed of all or hierarchy levels with delimiters, or the Sparkplug network can be restricted to L2, e.g. using the Production Line name.
+
+Example: `site:area:line:cell/edge_nodeID/device/ID/raw_namespace/prediction/awefjio/1.0.0`
+
+### UNS Snapshot
+This is how it would look like in a Unified Namespace
+
+Site 
+	Area
+		Line
+			Cell
+				Node
+					Device
+						“raw/temperature” -> JSON
+						“predictions/model_id/version” -> JSON
+						SafetyViolation -> bool
+
 
 ## Standards for Payload Definition
 One simple option for adding ML outputs to an Sparkplug payload would be to use the string data type and just add model predictions and outputs in the form of raw json. This brute force option can certainly work in a pinch, but loses all of the benefits of Sparkplug’s structure, making it harder to scale different types of models across large MQTT deployments without a great deal of institutional knowledge needed to interpret results. A better approach would be to adopt the structure defined
