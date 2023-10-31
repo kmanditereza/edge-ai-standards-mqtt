@@ -36,16 +36,22 @@ The primary objectives of the Functional Namespace are:
 
 #### Raw Data Namespace in Flat MQTT
 How granular we want to go with the org hierarchy can be discussed.
+![](diagrams/raw_data_namespace-in_flat_MQTT.png)
 
 #### Function Namespace in Flat MQTT
+![](diagrams/functional_namespace_in_flat_MQTT.png)
 
 ### MQTT Sparkplug  Topic Namespace Structuring
 The group_id  can be composed of all or hierarchy levels with delimiters, or the Sparkplug network can be restricted to L2, e.g. using the Production Line name.
+![](diagrams/sparkplug_topic_namespace_structuring_raw.png)
 
 Example: `site:area:line:cell/edge_nodeID/device/ID/raw_namespace/prediction/awefjio/1.0.0`
 
+![](diagrams/sparkplug_topic_namespace_structuring_functional.png)
+
 ### UNS Snapshot
 This is how it would look like in a Unified Namespace
+![](diagrams/uns_snapshot.png)
 
 Site 
 	Area
