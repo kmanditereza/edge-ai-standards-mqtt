@@ -1,0 +1,77 @@
+{
+  "typeColor": -12583168,
+  "name": "ModzyAI_Model",
+  "tagType": "UdtType",
+  "tags": [
+    {
+      "name": "Data",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "valueSource": "memory",
+          "name": "People",
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "name": "Helmets",
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "name": "SafetyVests",
+          "tagType": "AtomicTag"
+        }
+      ]
+    },
+    {
+      "name": "Insights",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "valueSource": "expr",
+          "expression": "if(({[.]../Data/Helmets}\u003c{[.]../Data/People}),true,false)",
+          "dataType": "Boolean",
+          "name": "SafetyViolation",
+          "value": false,
+          "tagType": "AtomicTag"
+        }
+      ]
+    },
+    {
+      "name": "Info",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "value": {
+            "bindType": "parameter",
+            "binding": "{InstanceName}"
+          },
+          "valueSource": "memory",
+          "dataType": "String",
+          "name": "Name",
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "dataType": "String",
+          "name": "Type",
+          "value": "",
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "dataType": "String",
+          "name": "UID",
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "dataType": "String",
+          "name": "Version",
+          "tagType": "AtomicTag"
+        }
+      ]
+    }
+  ]
+}
