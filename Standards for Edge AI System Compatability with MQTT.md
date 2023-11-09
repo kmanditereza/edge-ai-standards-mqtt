@@ -178,17 +178,74 @@ General payload object
 ```
 
 #### Image segmentation
+
+##### Run-length encoding format
 ```json
 {
-    "class": "className",
-    "score": 1.0
+   "segments":[
+      {
+         "class":"className",
+         "score":1.0,
+         "imageMask":{
+            "originalWidth":500,
+            "originalHeight":600,
+            "rle":[
+               [1,0,1,0],
+               [0,0,1,1]
+            ]
+         },
+         "boundingBox":{
+            "x":100,
+            "y":200,
+            "width":300,
+            "height":400
+         }
+      }
+   ]
+}
+```
+##### Image format
+
+##### Points format
+
+#### Named entity recognition
+```json
+{
+   "entities":[
+      {
+         "entityGroup":"B-LOC",
+         "score":1.0,
+         "textSpan":{
+            "start":0,
+            "end":5,
+            "text":"Paris is a city."
+         }
+      }
+   ]
 }
 ```
 
-#### Named entity recognition
 #### Text summarization
+```json
+{
+    "text":"Summarized text"
+}
+```
+
 #### Text generation
+```json
+{
+    "text":"Generated text"
+}
+```
+
 #### Translation
+```json
+{
+    "text":"Translated text"
+}
+```
+
 #### Image
 #### Video
 #### Audio segmentation
