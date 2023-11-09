@@ -97,13 +97,44 @@ XML has some value for legacy systems and may be a necessary choice, but it shou
 It is recommended to default to a protobuf format for AI & ML model output messages when at all possible. In the event that protobuf does not support a certain integration, JSON is the next best option. This standard provides examples in both protobuf and JSON, but not XML.
 
 ### Flat MQTT model payloads
+General payload object
+```json
+{
+   "identifier":"inference-2HYZh8a4jtFi3xFc4e3TWRmclff",
+   "model":{
+      "identifier":"ed542963de",
+      "version":"1.0.1",
+      "name":"Sentiment Analysis"
+   },
+   "tags":{
+      "srcTopic":"site.bld.asdf/asdf/asdf/asdf",
+      "messageID":"abcd1234",
+      "inputSizeInBytes":"32",
+      "inputSha256Digest":"be01ef104fb88fd151132733e746fe29b997348bf34be875e25ba48c0d7436ca"
+   },
+   "explaination":{},
+   "submittedAt":"2022-11-15T03:47:15.208Z",
+   "completedAt":"2022-11-15T03:47:15.247Z",
+   "elapsedTime":"0.039s",
+   "results":[
+      {
+         "key":"results.json",
+         "base64EncodedValue": "eyJkYXRhIjp7InJlc3VsdCI6eyJjbGFzc1ByZWRpY3Rpb25zIjpbeyJjbGFzcyI6ImpveSIsInNjb3JlIjowLjc2Mjg3MzgyODQxMTEwMjN9LHsiY2xhc3MiOiJhbmdlciIsInNjb3JlIjowLjIxMzUzODYzMTc5NjgzNjg1fSx7ImNsYXNzIjoiZmVhciIsInNjb3JlIjowLjAxNTAxMTU1NDU4MzkwNzEyN30seyJjbGFzcyI6InNhZG5lc3MiLCJzY29yZSI6MC4wMDQ5NDY1OTU5ODkxNjc2OX0seyJjbGFzcyI6InN1cnByaXNlIiwic2NvcmUiOjAuMDAyMTY4MDE2OTczODgyOTEzNn0seyJjbGFzcyI6ImxvdmUiLCJzY29yZSI6MC4wMDE0NjEzMDQ4NDA2MzE3ODN9XX0sImV4cGxhbmF0aW9uIjpudWxsLCJkcmlmdCI6bnVsbH19",
+         "contentType":"application/json"
+      }
+   ]
+}
+
+```
+
+
 #### Tensor
 
 
 #### Classification
 ```json
 {
-   "class_predictions":[
+   "classPredictions":[
       {
          "class":"className",
          "score":1.0
@@ -117,7 +148,7 @@ It is recommended to default to a protobuf format for AI & ML model output messa
 {
    "classifications":[
       {
-         "class_predictions":[
+         "classPredictions":[
             {
                "class":"className",
                "score":1.0
@@ -135,7 +166,7 @@ It is recommended to default to a protobuf format for AI & ML model output messa
       {
          "class":"className",
          "score":1.0,
-         "bounding_box":{
+         "boundingBox":{
             "x":100,
             "y":200,
             "width":300,
