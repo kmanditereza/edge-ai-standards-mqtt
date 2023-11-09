@@ -53,7 +53,7 @@ How granular we want to go with the org hierarchy can be discussed.
 #### Function Namespace in Flat MQTT
 ![](diagrams/functional_namespace_in_flat_MQTT.png)
 
-### MQTT Sparkplug  Topic Namespace Structuring
+### MQTT Sparkplug Topic Namespace Structuring
 The group_id  can be composed of all or hierarchy levels with delimiters, or the Sparkplug network can be restricted to L2, e.g. using the Production Line name.
 ![](diagrams/sparkplug_topic_namespace_structuring_raw.png)
 
@@ -82,21 +82,93 @@ Note: Templates may be the right solution for custom ML result data types such a
 Explainability and drift (calculated locally by the model) could extend the top-level payload definitions?
 
 ### Payload data format tradeoffs: XML vs. JSON vs. Protobuf
-When publishing data to an MQTT broker, there are a number of ways of encoding information. The three most commonn types include XML, JSON, and Protobuf.
-
-#### XML
-
-#### JSON
+When publishing data to an MQTT broker, there are a number of ways of encoding the information. The three most commonn types include XML, JSON, and Protobuf.
 
 #### Protobuf
+Protobuf is the highest performing format and should be the top choice in payload format when developing new AI & ML powered systems. Because data in the protobuf format is sent as bytes, not raw text, message sizes are much smaller when using protobuf as compared to XML or JSON. Additionally, `.proto` files enforce a common understanding of message formats, so schema changes resulting in downstream errors are not an issue. Protobuf is also used by Sparkplug, so it provides the most future-proof format.
+
+#### JSON
+JSON can also be a good choice for formatting payload data. First of all, JSON objects are human readable, which makes them easier to debug when developing new connected systems, compared to protbuf where the messages themselves are sent as bytes. Secondly, since JSON is ubiquitous, most systems can read, write, or interpret JSON. This makes it well suited for compatibility across multiple systems. Its primary downsides include the fact that message sizes are larger than protobuf, and there is no real mechanism to enforce a strict data structure. This results in scenarios where if an upstream system publishes a change to a JSON schema, downstream systems may experience errors until they have been updated to parse this change.
+
+#### XML
+XML has some value for legacy systems and may be a necessary choice, but it should be the last option in most situations. JSON provides similar levels of human readabillity to XML while protobuf offers a significantly smaller message size. Aside from legacy compatibility, it should generally be avoided.
 
 #### Recommendation
+It is recommended to default to a protobuf format for AI & ML model output messages when at all possible. In the event that protobuf does not support a certain integration, JSON is the next best option. This standard provides examples in both protobuf and JSON, but not XML.
+
+### Flat MQTT model payloads
+#### Tensor
 
 
-### Model format-specific payloads
+#### Classification
+```json
+{
+   "class_predictions":[
+      {
+         "class":"className",
+         "score":1.0
+      }
+   ]
+}
+```
+
+#### Multi-classification
+```json
+{
+   "classifications":[
+      {
+         "class_predictions":[
+            {
+               "class":"className",
+               "score":1.0
+            }
+         ]
+      }
+   ]
+}
+```
+
+#### Object detection
+```json
+{
+   "detections":[
+      {
+         "class":"className",
+         "score":1.0,
+         "bounding_box":{
+            "x":100,
+            "y":200,
+            "width":300,
+            "height":400
+         }
+      }
+   ]
+}
+```
+
+#### Image segmentation
+```json
+{
+    "class": "className",
+    "score": 1.0
+}
+```
+
+#### Named entity recognition
+#### Text summarization
+#### Text generation
+#### Translation
+#### Image
+#### Video
+#### Audio segmentation
+#### Time-series classification
+#### Regression
+#### Ranking
+
+
+### Sparkplug MQTT model payloads
 Maching learning applications at the edge are primarily focused on providing two types of outputs (1) predictions about things the _may_ happen in the future and (2) insights translated from unstructured sources (audio, video, etc.) into structured insights (classification or detection). Downstream systems require detailed information in order to make use of these outputs...
 #### Tensor
-For tensors, it might be best to use the Sparkplug dataset definition
 #### Classification
 #### Recommended format for classification model outputs
 #### Multi-classification
