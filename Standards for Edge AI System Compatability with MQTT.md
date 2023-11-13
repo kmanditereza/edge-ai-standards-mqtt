@@ -8,10 +8,10 @@ MQTT is one of the most popular protocols for connecting IIoT devices and unifyi
 Edge AI applications are wildly diverse and often need to incorporate high performance hardware, specialized sensors, and sophisticated ML models to process data sources such as video, audio, or raw machine data. However, for the sake of considering how edge AI and MQTT can work together, we can breakdown all of these applications into one of four patterns as shown in the table below.
 
 Table A: Edge AI on MQTT Design Patterns
-|                                                          | Subscribe to MQTT topic        | Ingest other data (other protocols, direct sensor data, etc.) |
+|                                                          | Model Input: MQTT topic(s) [Subscribe]         | Model Input: Other protocols, direct sensor data, etc. |
 |----------------------------------------------------------|--------------------------------|---------------------------------------------------------------|
-| Publish predictions to MQTT topic                         | The "Fully-integrated" pattern | The "Unstructured Data" pattern                               |
-| Publish predictions elsewhere (systems without MQTT support) | The "Ambassador" pattern       | Not covered by this standard                               |
+| **Model Output: MQTT topic(s) [Publish]**                         | The "Fully-integrated" pattern | The "Unstructured Data" pattern                               |
+| **Model Output: Other systems lacking MQTT support** | The "Ambassador" pattern       | _Not covered by this standard_                               |
 
 ### The "Fully-integrated" pattern
 This pattern represents an AI/ML system where both data inputs and predicted outputs are all being published and consumed over MQTT. This pattern is best suited for AI & ML applications running on structured data (tabular or machine data) that is already being published to MQTT.
