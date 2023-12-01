@@ -136,16 +136,13 @@ For Flat MQTT applications, we propose the following general payload object. Thi
       "inputSizeInBytes":"32",
       "inputSha256Digest":"be01ef104fb88fd151132733e746fe29b997348bf34be875e25ba48c0d7436ca"
    },
-   "explaination":{},
-   "completedAt":"2022-11-15T03:47:15.247Z",
-   "elapsedTime":"0.039s",
    "results":[
       {
-         "key":"results.json",
-         "base64EncodedValue": "eyJkYXRhIjp7InJlc3VsdCI6eyJjbGFzc1ByZWRpY3Rpb25zIjpbeyJjbGFzcyI6ImpveSIsInNjb3JlIjowLjc2Mjg3MzgyODQxMTEwMjN9LHsiY2xhc3MiOiJhbmdlciIsInNjb3JlIjowLjIxMzUzODYzMTc5NjgzNjg1fSx7ImNsYXNzIjoiZmVhciIsInNjb3JlIjowLjAxNTAxMTU1NDU4MzkwNzEyN30seyJjbGFzcyI6InNhZG5lc3MiLCJzY29yZSI6MC4wMDQ5NDY1OTU5ODkxNjc2OX0seyJjbGFzcyI6InN1cnByaXNlIiwic2NvcmUiOjAuMDAyMTY4MDE2OTczODgyOTEzNn0seyJjbGFzcyI6ImxvdmUiLCJzY29yZSI6MC4wMDE0NjEzMDQ4NDA2MzE3ODN9XX0sImV4cGxhbmF0aW9uIjpudWxsLCJkcmlmdCI6bnVsbH19",
-         "contentType":"application/json"
+         "modelTypeName": "eyJkYXRhIjp7InJlc3VsdCI6eyJjbGFzc1ByZWRpY3Rpb25zIjpbeyJjbGFzcyI6ImpveSIsInNjb3JlIjowLjc2Mjg3MzgyODQxMTEwMjN9LHsiY2xhc3MiOiJhbmdlciIsInNjb3JlIjowLjIxMzUzODYzMTc5NjgzNjg1fSx7ImNsYXNzIjoiZmVhciIsInNjb3JlIjowLjAxNTAxMTU1NDU4MzkwNzEyN30seyJjbGFzcyI6InNhZG5lc3MiLCJzY29yZSI6MC4wMDQ5NDY1OTU5ODkxNjc2OX0seyJjbGFzcyI6InN1cnByaXNlIiwic2NvcmUiOjAuMDAyMTY4MDE2OTczODgyOTEzNn0seyJjbGFzcyI6ImxvdmUiLCJzY29yZSI6MC4wMDE0NjEzMDQ4NDA2MzE3ODN9XX0sImV4cGxhbmF0aW9uIjpudWxsLCJkcmlmdCI6bnVsbH19",
+         "dataType":"Bytes"
       }
-   ]
+   ],
+   "explaination":{}
 }
 
 ```
@@ -153,16 +150,110 @@ Below is a breakdown of the key components found within this payload format:
 * `identifier`: This represents a unique ID for an individual inference which might be useful or necessary for historical review or fo mapping model predictions to a given piece of input data
 * `model`: This object provides important metadata about the model used to generate this output (*note to standards contributors* `identifier` and `version` will already be captured in the topic, so these values are redundant and could likely be removed)
 * `tags`: Tags provide a way to incorporate metadata related to the input fed into the model that generated an inference, including the topic that it came from, as well as a hash of the incoming data itself
-* `explanation`: This field provides space to incorporate explainable outputs directly from the model itself. Explainable outputs are typically used to provide insight into how a machine learning model came to it's prediction
-* `completedAt`: A timestamp representing the moment an inference was generated
-* `elapsedTime`: The amount of time a model took to process input data and generate an output (i.e. a prediction or inference)
 * `results`: The object containing a model's outputs (i.e. predictions or inferences). Results can be provided as one of three types:
     * `textValue`: This type would exclusively be used to return raw text results
     * `jsonValue`: This type would be used to return a JSON object in raw text
     * `base64EncodedValue`: This type would be used to return a JSON object in a base64 encoded format
+* `explanation`: This field provides space to incorporate explainable outputs directly from the model itself. Explainable outputs are typically used to provide insight into how a machine learning model came to it's prediction
 
 ### Sparkplug MQTT model payloads
-TBD
+
+#### DBIRTH
+DBIRTH messages for edge AI applications will need to inform Host Applications about all AI and ML metrics that it will publish in the future. If new models are added to an edge device, a new DBIRTH message would need to be published.
+
+**DBIRTH Topic**
+Example topic:
+```
+spBv1.0/Site:Area:Line:Cell/DBIRTH/Edge Node ID/Edge Device ID
+```
+
+**DBIRTH Payload**
+
+Example payload for classification model:
+```
+{
+  "timestamp": 1486144502122,
+  "metrics": [{
+  "name": "inference/identifier",
+  "timestamp": 1486144502122,
+  "dataType": "string",
+  "value": "inference-2HYZh8a4jtFi3xFc4e3TWRmclff"
+  },
+  "timestamp": 1486144502122,
+  "metrics": [{
+  "name": "inference/model/identifier",
+  "timestamp": 1486144502122,
+  "dataType": "string",
+  "value": "ed542963de"
+  },
+  "timestamp": 1486144502122,
+  "metrics": [{
+  "name": "inference/model/version",
+  "timestamp": 1486144502122,
+  "dataType": "string",
+  "value": false
+  },
+  "timestamp": 1486144502122,
+  "metrics": [{
+  "name": "inference/model/name",
+  "timestamp": 1486144502122,
+  "dataType": "string",
+  "value": false
+  },
+  "timestamp": 1486144502122,
+  "metrics": [{
+  "name": "inference/tags/sourceTopic",
+  "timestamp": 1486144502122,
+  "dataType": "string",
+  "value": false
+  },
+  "timestamp": 1486144502122,
+  "metrics": [{
+  "name": "inference/tags/messageID",
+  "timestamp": 1486144502122,
+  "dataType": "string",
+  "value": false
+  },
+  "timestamp": 1486144502122,
+  "metrics": [{
+  "name": "inference/tags/inputSizeInBytes",
+  "timestamp": 1486144502122,
+  "dataType": "string",
+  "value": false
+  },
+  "timestamp": 1486144502122,
+  "metrics": [{
+  "name": "inference/tags/inputSha256Digest",
+  "timestamp": 1486144502122,
+  "dataType": "string",
+  "value": false
+  },
+  "timestamp": 1486144502122,
+  "metrics": [{
+  "name": "inference/results/classPredictions/className",
+  "timestamp": 1486144502122,
+  "dataType": "string",
+  "value": false
+  },
+  "timestamp": 1486144502122,
+  "metrics": [{
+  "name": "inference/results/classPredictions/score",
+  "timestamp": 1486144502122,
+  "dataType": "double",
+  "value": false
+  }
+]}
+```
+
+#### DDATA
+
+**DBIRTH Topic**
+Example topic:
+```
+spBv1.0/Site:Area:Line:Cell/DDATA/Edge Node ID/Edge Device ID
+```
+
+
 
 ### AI/ML model result formats
 Below are recommended JSON structures for the most common types of machine learning models. Protofile definitions of these data formats are also available in the appendix and on Github.
