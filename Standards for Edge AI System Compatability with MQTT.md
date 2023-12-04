@@ -14,16 +14,25 @@ Table A: Edge AI on MQTT Design Patterns
 | **Model Input: Other non MQTT-compliant systems.** | The "Unstructured Data" pattern | _Not covered by this standard_                |
 
 ### The "Fully-integrated" pattern
+
+![](diagrams/fully-integrated-pattern.png)
+
 This pattern represents an AI/ML system where both data inputs and predicted outputs are all being published and consumed over MQTT. This pattern is best suited for AI & ML applications running on structured data (tabular or machine data) that is already being published to MQTT. Models consuming data in this pattern may include applications like predictive maintenance, as part of a feedback control system, or for general time-series classification.
 
 One of the most important aspects to consider for the Fully-integrated pattern is the data format of incoming data being processed by a model. Typically, machine learning models have strict data format requirements and can only process data that adheres to that format. These formats typically take the shape of either tables, tensors, or other arrays. Machine learning models can provide some amount of pre-processing, but building in sophisticated data formatting into a model is not efficient. Instead of building sophisticated data handling into models running at the edge, it's best to ensure that payloads for any topics that a model must subscribe to are using the same format. This can be done at the device level by formatting data to meet that standard or, better yet, by introducing a data transformation layer that can provide common formatting before republishing that data to a new topic.
 
 ### The "Unstructured Data" pattern
+
+![](diagrams/unstructured-data-pattern.png)
+
 This pattern represents an AI/ML system where input data is available via some other system or protocol, then that raw data is processed through a model, and finally predictions are published to MQTT.
 
 AI/ML systems operating in this pattern present some of the most ideal applications for using AI at the edge. Unstructured data sources such as images, full motion video, audio, and lidar are not well suited to being transmitted over MQTT. First of all, they are increadibly large, heavy data sources. Secondly, many of them are continuous, meaning they do not align well with an event-based architecture. Through the use of AI/ML models, this raw data can be converted into insights such as detections of specific objects, vehicles, or people that are of interest, and then those insights can be published back to MQTT using very little bandwidth.
 
 ### The "Ambassador" pattern
+
+![](diagrams/ambassador-pattern.png)
+
 This pattern represents an AI/ML system where input data is published to MQTT and processed by one or more AI & ML models, but is then sent to another system via a different protocol.
 
 AI/ML systems operating in this pattern may include applications such as robotics, where sensor data is used to generate a prediction and then fed directly to a control system.
@@ -157,7 +166,7 @@ For Flat MQTT applications, we propose the following general payload object. Thi
             }
          ],
          "modelType":"classPredictions",
-         "dataType":"String"
+         "dataType":"stringValue"
       }
    ],
    "explaination":{
@@ -167,13 +176,20 @@ For Flat MQTT applications, we propose the following general payload object. Thi
 
 ```
 Below is a breakdown of the key components found within this payload format:
-* `identifier`: This represents a unique ID for an individual inference which might be useful or necessary for historical review or fo mapping model predictions to a given piece of input data
-* `model`: This object provides important metadata about the model used to generate this output (*note to standards contributors* `identifier` and `version` will already be captured in the topic, so these values are redundant and could likely be removed)
+* `identifier`: This represents a unique ID for an individual inference which might be useful or necessary for historical review or for mapping model predictions to a given piece of input data
+* `model`: This object provides important metadata about the model used to generate this output
+  * `identifier`: A unique identifier that can be used to reference an individual model
+  * `version`: The unique version of this model that was used to generate an inference
+  * `name`: The human-friendly name for this model
 * `tags`: Tags provide a way to incorporate metadata related to the input fed into the model that generated an inference, including the topic that it came from, as well as a hash of the incoming data itself
-* `results`: The object containing a model's outputs (i.e. predictions or inferences). Results can be provided as one of three types:
-    * `textValue`: This type would exclusively be used to return raw text results
-    * `jsonValue`: This type would be used to return a JSON object in raw text
-    * `base64EncodedValue`: This type would be used to return a JSON object in a base64 encoded format
+  * `srcTopic`: The topic that a model subscribed to in order to generate a prediction (relevant for "Fully-integrated" and "Ambassador" patterns)
+  * `messageID`: The id of the message payload that this inference was generated in response to (relevant for "Fully-integrated" and "Ambassador" patterns)
+  * `inputSizeInBytes`: Size of the model input data for this inference
+  * `inputSha256Digest`: SHA256 digest of the model input (for security purposes)
+* `results`: The object containing a model's outputs (i.e. inferences).
+  * `classPredictions`: This key:value pair will be specific to the `modelType` format that is used by this model. The key _must_ match the value found in the `modelType` field.
+  * `modelType`: Unique name for a specific model inference format. It can be one of the formats included in this specification, or a custom format developed for a niche application. This value needs to match
+  * `dataType`: This field represents the inference result object dataformat. Typically this value will either be 'stringValue' or `base64EncodedValue`.
 * `explanation`: This field provides space to incorporate explainable outputs directly from the model itself. Explainable outputs are typically used to provide insight into how a machine learning model came to it's prediction
 
 ### Sparkplug MQTT model payloads
@@ -259,7 +275,7 @@ Example payload for classification model:
          "name":"inference/results/dataType",
          "timestamp":1486144502122,
          "dataType":"string",
-         "value":"String"
+         "value":"stringValue"
       }
    ],
    "seq":1
