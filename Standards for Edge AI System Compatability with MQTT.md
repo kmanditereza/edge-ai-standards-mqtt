@@ -86,7 +86,7 @@ Some of these fields are well-defined for any general purpose industrial applica
   * `ip_camera_1` An IP camera with an embedded GPU that is actively running one or more models.
   * `edge_server_1` A dedicated, on-site hosting server that is actively running one or more models.
   * `machinery_1` A piece of machinery with enough on-board processing power to run an AI/ML model locally. This may be the case for embedded models running on a microcontroller.
-* **device_id**: While often used to to indicate a physical or logical device, such as a PLC, this field can also be used to represent a logical grouping of data points. Using this latter definition, device_id should be set to the name of the model that is generating inferences. This is best done using the human readable model name with the model's version number attached as well `model_name:model_version`.
+* **device_id**: While often used to to indicate a physical or logical device, such as a PLC, this field can also be used to represent a logical grouping of data points. Using this latter definition, device_id should be set to the name of the model that is generating inferences. A human-readable model name with the model's version number appended (i.e. `Machine Failure Prediction:0.0.1`) is a very readable way to structure this value, however care should be taken to choose a value for the model name that is stable. This may mean that using a unique identifier is actually the best choice (i.e. `brzrip6cxk:0.0.1`) so that a change in model name doesn't impact downstream applications.
 
 #### Raw Data Namespace
 
@@ -167,22 +167,19 @@ For Flat MQTT applications, we propose the following general payload object. Thi
       "inputSizeInBytes":32,
       "inputSha256Digest":"be01ef104fb88fd151132733e746fe29b997348bf34be875e25ba48c0d7436ca"
    },
-   "results":[
-      {
-         "classPredictions":[
-            {
-               "className":"no_failure",
-               "score":0.974
-            },
-            {
-               "className":"failure",
-               "score":0.026
-            }
-         ],
-         "modelType":"classPredictions",
-         "dataType":"stringValue"
-      }
-   ],
+   "resultType":"classPredictions",
+   "result":{
+      "classPredictions":[
+         {
+            "className":"no_failure",
+            "score":0.974
+         },
+         {
+            "className":"failure",
+            "score":0.026
+         }
+      ]
+   },
    "explaination":{
       
    }
@@ -274,22 +271,16 @@ Example payload for classification model:
          "value":"be01ef104fb88fd151132733e746fe29b997348bf34be875e25ba48c0d7436ca"
       },
       {
-         "name":"inference/results/classPredictions",
-         "timestamp":1486144502122,
-         "dataType":"string",
-         "value":'[{"className":"no_failure","score":0.974},{"className":"failure","score":0.026}]'
-      },
-      {
-         "name":"inference/results/modelType",
+         "name":"inference/resultType",
          "timestamp":1486144502122,
          "dataType":"string",
          "value":"classPredictions"
       },
       {
-         "name":"inference/results/dataType",
+         "name":"inference/result",
          "timestamp":1486144502122,
          "dataType":"string",
-         "value":"stringValue"
+         "value":'{"classPredictions":[{"className":"no_failure","score":0.974},{"className":"failure","score":0.026}]}'
       }
    ],
    "seq":1
