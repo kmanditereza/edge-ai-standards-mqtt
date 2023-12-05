@@ -72,7 +72,21 @@ _(**Note to standards reviewers:** This diagram is illustrative, but as an early
 
 ![](diagrams/functional_namespace_in_flat_MQTT.png)
 
-### MQTT Sparkplug Topic Namespace Structuring
+### Sparkplug Topic Namespace Structuring
+
+Within the Sparkplub 3.0.0 specification, all MQTT clients MUST use the following topic namespace structure:
+
+`namespace/group_id/message_type/edge_node_id/[device_id]`
+
+Some of these fields are well-defined for any general purpose industrial application, but others are harder to apply to an AI model running at the edge. The following recommendations can be used to adapt these required fields to an AI/ML context:
+* **namespace**: `spBv1.0` is the most up-to-date version of the Sparkplug specification and should be used
+* **group_id**: Sparkplug's recommendation is for the Group ID to be descriptive, but as small as possible, to logically group Sparkplug Edge Nodes. In order to maintain parity between flat MQTT and Sparkplug, this specification recommends using a concatenation of the ISA-95 format of `site:area:line:cell` for this field, but that is not required for a successful edge AI implementation into a Sparkplug system.
+* **message_type**: This element must be one of 9 message types found withing the Sparkplub specification. AI & ML applications at the edge will primarily be posting new inference results using the `DDATA` message type, but `NBIRTH`, `NDEATH`, `DBIRTH`, `DDEATH`, and `NDATA` may also be needed.
+* **edge_node_id**: Edge nodes are defined as any client that manages an MQTT session. Based on this definition it is then recommended to use this element to indicate the identity of the computing hardware that is actively running models and connected to an MQTT session. Examples could include:
+  * `ip_camera_1` An IP camera with an embedded GPU that is actively running one or more models.
+  * `edge_server_1` A dedicated, on-site hosting server that is actively running one or more models.
+  * `machinery_1` A piece of machinery with enough on-board processing power to run an AI/ML model locally. This may be the case for embedded models running on a microcontroller.
+* **device_id**: While often used to to indicate a physical or logical device, such as a PLC, this field can also be used to represent a logical grouping of data points. Using this latter definition, device_id should be set to the name of the model that is generating inferences. This is best done using the human readable model name with the model's version number attached as well `model_name:model_version`.
 
 #### Raw Data Namespace
 
@@ -148,8 +162,8 @@ For Flat MQTT applications, we propose the following general payload object. Thi
       "name":"Machine Failure Prediction"
    },
    "tags":{
-      "srcTopic":"site:area:line:cell/node/device/raw/sensor_name",
-      "messageID":"abcd1234",
+      "sourceTopic":"site:area:line:cell/node/device/raw/sensor_name",
+      "sourceMessageID":"abcd1234",
       "inputSizeInBytes":32,
       "inputSha256Digest":"be01ef104fb88fd151132733e746fe29b997348bf34be875e25ba48c0d7436ca"
    },
@@ -182,8 +196,8 @@ Below is a breakdown of the key components found within this payload format:
   * `version`: The unique version of this model that was used to generate an inference
   * `name`: The human-friendly name for this model
 * `tags`: Tags provide a way to incorporate metadata related to the input fed into the model that generated an inference, including the topic that it came from, as well as a hash of the incoming data itself
-  * `srcTopic`: The topic that a model subscribed to in order to generate a prediction (relevant for "Fully-integrated" and "Ambassador" patterns)
-  * `messageID`: The id of the message payload that this inference was generated in response to (relevant for "Fully-integrated" and "Ambassador" patterns)
+  * `sourceTopic`: The topic that a model subscribed to in order to generate a prediction (relevant for "Fully-integrated" and "Ambassador" patterns)
+  * `sourceMessageID`: The id of the message payload that this inference was generated in response to (relevant for "Fully-integrated" and "Ambassador" patterns)
   * `inputSizeInBytes`: Size of the model input data for this inference
   * `inputSha256Digest`: SHA256 digest of the model input (for security purposes)
 * `results`: The object containing a model's outputs (i.e. inferences).
@@ -201,7 +215,7 @@ DBIRTH messages for edge AI applications will need to inform Host Applications a
 Example topic:
 
 ```
-spBv1.0/Site:Area:Line:Cell/DBIRTH/Edge Node ID/Edge Device ID
+spBv1.0/Site:Area:Line:Cell/DBIRTH/Raspberry Pi 3B 1/Machine Failure Prediction:0.0.1
 ```
 
 **DBIRTH Payload**
@@ -242,7 +256,7 @@ Example payload for classification model:
          "value":"site:area:line:cell/node/device/raw/sensor_name"
       },
       {
-         "name":"inference/tags/messageID",
+         "name":"inference/tags/sourceMessageID",
          "timestamp":1486144502122,
          "dataType":"string",
          "value":"abcd1234"
