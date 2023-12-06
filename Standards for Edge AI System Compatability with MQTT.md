@@ -641,6 +641,7 @@ Text summarization is used to
 {
     "base64Image":"data:image/jpeg;base64,/9j/4AAQ...//2Q=="
 }
+```
 
 ## Appendix A: ML Message Definitions
 ### Results
