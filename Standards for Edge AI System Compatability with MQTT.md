@@ -636,6 +636,11 @@ Text summarization is used to
 #### Audio segmentation
 #### Regression
 #### Ranking
+#### Base64 Encoded Image
+```json
+{
+    "base64Image":"data:image/jpeg;base64,/9j/4AAQ...//2Q=="
+}
 
 ## Appendix A: ML Message Definitions
 ### Results
