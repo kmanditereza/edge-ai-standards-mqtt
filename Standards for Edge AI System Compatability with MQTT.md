@@ -143,7 +143,7 @@ Within the Sparkplug 3.0.0 specification, all MQTT clients MUST use the followin
 
 `namespace/group_id/message_type/edge_node_id/[device_id]`
 
-Some of these fields are well-defined for any general purpose industrial application, but for other fields it becomes difficult to determine how it might apply to an AI model running at the edge. The following recommendations can be used to adapt these required fields to an AI/ML context:
+Some of these fields are well-defined for any general purpose industrial application, but for other fields it becomes difficult to determine how they might apply to an AI model running at the edge. The following recommendations can be used to adapt these required fields to an AI/ML context:
 
 **namespace**: `spBv1.0` is the most up-to-date version of the Sparkplug specification and should be used
 
