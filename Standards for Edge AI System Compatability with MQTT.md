@@ -87,7 +87,9 @@ _**Example**_
 
 The `raw` namespace for a milling machine might be used to publish raw sensor data to the following topic:
 
-`site/area/line/cell/milling_machine/raw`
+```
+site/area/line/cell/milling_machine/raw
+```
 
 Messages to this topic might include the following metrics:
 * Air temperature (K)
@@ -112,7 +114,9 @@ The `inference` namespace for the same milling machine might be used to publish 
 
 Notional topic for a failure prediction model running on data from a milling machine:
 
-`site/area/line/cell/milling_machine/Machine Failure Prediction/0.0.1/inference`
+```
+site/area/line/cell/milling_machine/Machine Failure Prediction/0.0.1/inference
+```
 
 Messages to this topic might include the following metrics:
 * Failure Likelihood (with confidence score measured from 0 to 1)
@@ -128,17 +132,22 @@ Using the  milling machine example, the "insight" namespace for this might be us
 
 Notional topic for single-device, single-model insight:
 
-`site/area/line/cell/milling_machine/Machine Failure Prediction/0.0.1/insight`
+```
+site/area/line/cell/milling_machine/Machine Failure Prediction/0.0.1/insight
+```
  
 Messages to this topic might include the following metric:
 * Maintenance Required: Published anytime the `inference/failure` score is larger than the `inference/no_failure` score, indicating that the Machine Failure Prediction model has found the milling machine to be likely to fail some time soon.
 
 _**Example - Multi-device, Multi-model Insight**_
+
 Using a computer vision example, perhaps you need to identify any persons in an industrial space not wearing protective equipment. One AI/ML model could be used to identify the number of people detected across 10 cameras while another model identifies the number of hardhats detected across all of those cameras. The resulting metric "missing hardhats" would be calculated by subtracting the total number of hardhats from the total number of people found across all 10 camera feeds. In this example a new logical edge node is created called "PPE Safety Net" to represent insights related to PPE Safety within this portion of an industrial space.
 
 Notional topic for multi-device, multi-model insight:
 
-`site/area/line/cell/PPE Safety Net/insight`
+```
+site/area/line/cell/PPE Safety Net/insight
+```
 
 Messages to this topic might include the following metrics:
 * Missing Hardhats
@@ -147,7 +156,9 @@ Messages to this topic might include the following metrics:
 ### Topic Structure for Flat MQTT
 One of the major benefits of flat MQTT, is that there are no requirements for how topic structures can or should be defined. This makes MQTT highly flexible for numerous applications, allowing each organizatio to find a pattern that meets their needs. So as not to restrict namespace design for organizations using flat MQTT, this specification simply recommends appending edge AI-related namespace elements to end of the existing namespace structure.
 
-`[Customized MQTT topic structure]/[Customized Edge Hardware Identifier]` + `/model_name/model_version/inference`
+```
+[Customized MQTT topic structure]/[Customized Edge Hardware Identifier] + /model_name/model_version/inference
+```
 
 **[Customized MQTT topic structure]**: Any existing top-level topic structure for a flat MQTT namespace
 
@@ -174,7 +185,9 @@ One of the major benefits of flat MQTT, is that there are no requirements for ho
 
 Within the Sparkplug 3.0.0 specification, all MQTT clients MUST use the following topic namespace structure:
 
-`namespace/group_id/message_type/edge_node_id/[device_id]`
+```
+namespace/group_id/message_type/edge_node_id/[device_id]
+```
 
 Some of these fields are well-defined for any general purpose industrial application, but for other fields it becomes difficult to determine how they might apply to an AI model running at the edge. The following recommendations can be used to adapt these required fields to an AI/ML context:
 
