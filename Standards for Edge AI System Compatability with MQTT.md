@@ -717,7 +717,17 @@ Text summarization is used to
 
 
 #### Audio segmentation
-
+```json
+{
+    "segments": [
+        {
+            "class": "className",
+            "score": 1.0,
+            "timestamp": "00:00:12.414"
+        }
+    ]
+}
+```
 
 #### Regression
 
