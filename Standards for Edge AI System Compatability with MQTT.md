@@ -1,4 +1,4 @@
-# Edge AI System Compatability with MQTT
+# Edge AI System Compatibility with MQTT
 **Design Standards**
 
 Version 1.0.0-alpha.1, 2023-12-08
